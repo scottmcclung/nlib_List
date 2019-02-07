@@ -1,0 +1,12 @@
+{
+  "orgName": "nlib_List",
+  "edition": "Developer",
+  "features": [],
+  "orgPreferences": {
+    "enabled": [],
+    "disabled": [
+      "S1EncryptedStoragePref2",
+      "S1OfflinePref"
+    ]
+  }
+}
