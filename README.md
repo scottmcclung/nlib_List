@@ -27,10 +27,10 @@ nlib_List collection1 = nlib_List.collect();                                  //
 nlib_List collection2 = nlib_List.collect(new Contact(LastName = 'Jones'));   // Collection of SObjects
 nlib_List collection3 = nlib_List.collect(new Contact[]{});                   // Empty collection of SObjects
 nlib_List collection4 = nlib_List.collect( 'A' );                             // Collection of strings
-nlib_List collection4 = nlib_List.collect(new String[]{ 'A', 'B', 'C' });     // Collection of strings
-nlib_List collection5 = nlib_List.collect( 1 );                               // Collection of numbers
-nlib_List collection5 = nlib_List.collect(new Integer[]{ 1, 2, 3, 4, 5 });    // Collection of numbers
-nlib_List collection = nlib_List.collect(Date.today());                       // Collection of dates
+nlib_List collection5 = nlib_List.collect(new String[]{ 'A', 'B', 'C' });     // Collection of strings
+nlib_List collection6 = nlib_List.collect( 1 );                               // Collection of numbers
+nlib_List collection7 = nlib_List.collect(new Integer[]{ 1, 2, 3, 4, 5 });    // Collection of numbers
+nlib_List collection8 = nlib_List.collect(Date.today());                       // Collection of dates
 ```
 
 The ```combine``` method can also be used to merge two existing arrays or collections into a new list.
