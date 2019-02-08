@@ -1331,7 +1331,7 @@ public class nlib_List implements Iterator<Object>
   
   
   /**
-   * Return a new collection contains just the values from the
+   * Return a new collection containing just the values from the
    * given SObject field name
    *
    * @param fieldName
@@ -1354,7 +1354,8 @@ public class nlib_List implements Iterator<Object>
   public nlib_List pluckIds()
   {
     if(!isSObjectType()) throw new MalformedCallException( 'The pluckIds method is only available for SObject collections' );
-    return mapp( nlib_Func.PluckId );
+    nlib_List lst = new nlib_List( new Id[]{} );
+    return lst.add(mapp( nlib_Func.PluckId ));
   }
   
   

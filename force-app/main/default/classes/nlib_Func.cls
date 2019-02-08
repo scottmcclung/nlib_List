@@ -266,7 +266,7 @@ public class nlib_Func
     public override Object call( Object item, Object arg )
     {
       if(hasInvalidType( item )) throw new MalformedCallException( 'Use of the Pluck callback is limited to SObjects.' );
-      return ( (SObject) item ).get( 'Id' );
+      return (Id) ( (SObject) item ).get( 'Id' );
     }
     
     Boolean hasInvalidType( Object item )
