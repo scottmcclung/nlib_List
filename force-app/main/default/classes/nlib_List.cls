@@ -1355,7 +1355,7 @@ public class nlib_List implements Iterator<Object>
   {
     if(!isSObjectType()) throw new MalformedCallException( 'The pluckIds method is only available for SObject collections' );
     nlib_List lst = new nlib_List( new Id[]{} );
-    return lst.add(mapp( nlib_Func.PluckId ));
+    return lst.add( mapp( nlib_Func.PluckId ) );
   }
   
   
@@ -1767,21 +1767,57 @@ public class nlib_List implements Iterator<Object>
   
   
   
-  
-  public nlib_List sort(nlib_Func.IOrder sortable)
+  /**
+   * Returns a new collection sorted according the rules in the given callback
+   *
+   * @param callbackTypeName
+   * @return
+   */
+  public nlib_List sort( String callbackTypeName )
   {
+    return sort( System.Type.forName( callbackTypeName ) );
+  }
+  
+  
+  
+  
+  /**
+   * Returns a new collection sorted according the rules in the given callback
+   *
+   * @param callback
+   * @return
+   */
+  public nlib_List sort( Type callbackType )
+  {
+    return sort( (nlib_Func.IOrder) callbackType.newInstance() );
+  }
+  
+  
+  
+  
+  /**
+   * Returns a new collection sorted according the rules in the given callback
+   *
+   * @param callback
+   * @return
+   */
+  public nlib_List sort( nlib_Func.IOrder callback )
+  {
+    if(callback instanceof nlib_Func.Callback) {
+      ( (nlib_Func.Callback) callback ).setContext( this );
+    }
+    
     nlib_Func.SortableObject[] lst = new nlib_Func.SortableObject[]{};
     for(Object item : this.values) {
-      lst.add(new nlib_Func.SortableObject(item, sortable));
+      lst.add( new nlib_Func.SortableObject( item, callback ) );
     }
     lst.sort();
     nlib_List newList = nlib_List.collect();
     for(nlib_Func.SortableObject item : lst) {
-      newList.add(item.value());
+      newList.add( item.value() );
     }
     return newList;
   }
-  
   
   
   
