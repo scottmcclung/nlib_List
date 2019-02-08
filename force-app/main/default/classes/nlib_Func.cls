@@ -75,6 +75,14 @@ public class nlib_Func
   
   
   
+  public interface IOrder
+  {
+    Integer call( SortableObject item, SortableObject compareTo, Object arg );
+  }
+  
+  
+  
+  
   /**
    * Base class for versions of higher order functions that
    * allows for injection of the list context
@@ -150,6 +158,14 @@ public class nlib_Func
   {
     public Reduce() {}
     public abstract Object call( Object accumulation, Object item, Object arg );
+  }
+  
+  
+  
+  
+  public abstract class Order extends Callback implements IOrder
+  {
+    public abstract Integer call( SortableObject item, SortableObject compareTo, Object arg );
   }
   
   
@@ -304,6 +320,91 @@ public class nlib_Func
       if(arg instanceof String) return false;
       if(arg != null) return false;
       return true;
+    }
+  }
+  
+  
+  
+  public class SortNumbersAscending extends Order
+  {
+    public override Integer call( SortableObject item, SortableObject compareTo, Object arg )
+    {
+      Decimal value = (Decimal) item.value();
+      Decimal compareToValue = (Decimal) compareTo.value();
+      if(value == compareToValue) return 0;
+      if(value > compareToValue) return 1;
+      return -1;
+    }
+  }
+  
+  
+  
+  
+  public class SortNumbersDescending extends Order
+  {
+    public override Integer call( SortableObject item, SortableObject compareTo, Object arg )
+    {
+      Decimal value = (Decimal) item.value();
+      Decimal compareToValue = (Decimal) compareTo.value();
+      if(value == compareToValue) return 0;
+      if(value < compareToValue) return 1;
+      return -1;
+    }
+  }
+  
+  
+  
+  
+  public class SortTextAscending extends Order
+  {
+    public override Integer call( SortableObject item, SortableObject compareTo, Object arg )
+    {
+      String value = (String) item.value();
+      String compareToValue = (String) compareTo.value();
+      if(value == compareToValue) return 0;
+      if(value > compareToValue) return 1;
+      return -1;
+    }
+  }
+  
+  
+  
+  
+  public class SortTextDescending extends Order
+  {
+    public override Integer call( SortableObject item, SortableObject compareTo, Object arg )
+    {
+      String value = (String) item.value();
+      String compareToValue = (String) compareTo.value();
+      if(value == compareToValue) return 0;
+      if(value < compareToValue) return 1;
+      return -1;
+    }
+  }
+  
+  
+  
+  
+  public class SortableObject implements Comparable
+  {
+    public Object item;
+    IOrder callback;
+    
+    public SortableObject( Object item, IOrder callback )
+    {
+      this.item = item;
+      this.callback = callback;
+    }
+    
+    
+    public Integer compareTo( Object compareTo )
+    {
+      return callback.call( this, (SortableObject) compareTo, null );
+    }
+    
+    public Object value()
+    {
+      return item;
     }
   }
 }

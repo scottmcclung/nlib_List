@@ -1767,6 +1767,25 @@ public class nlib_List implements Iterator<Object>
   
   
   
+  
+  public nlib_List sort(nlib_Func.IOrder sortable)
+  {
+    nlib_Func.SortableObject[] lst = new nlib_Func.SortableObject[]{};
+    for(Object item : this.values) {
+      lst.add(new nlib_Func.SortableObject(item, sortable));
+    }
+    lst.sort();
+    nlib_List newList = nlib_List.collect();
+    for(nlib_Func.SortableObject item : lst) {
+      newList.add(item.value());
+    }
+    return newList;
+  }
+  
+  
+  
+  
+  
   /**
    * Breaks the collection up into a given number of groups
    *
