@@ -75,16 +75,22 @@ public class nlib_Func
   
   
   
+  /**
+   * Callback that accepts two objects to be compared in a sorting context.
+   * Returns an integer value (1, 0 , -1) that the Comparable interface expects
+   * based on the ranking of the two objects.
+   *
+   */
   public interface IOrder
   {
-    Integer call( SortableObject item, SortableObject compareTo, Object arg );
+    Integer call( SortableObject item, SortableObject compareTo );
   }
   
   
   
   
   /**
-   * Base class for versions of higher order functions that
+   * Base class for higher order functions that
    * allows for injection of the list context
    *
    */
@@ -163,9 +169,44 @@ public class nlib_Func
   
   
   
+  /**
+   * Abstract base class for implementations of IOrder
+   * Extend this class if you want your implementations to have access to
+   * the nlib_List context
+   */
   public abstract class Order extends Callback implements IOrder
   {
-    public abstract Integer call( SortableObject item, SortableObject compareTo, Object arg );
+    public abstract Integer call( SortableObject item, SortableObject compareTo );
+  }
+  
+  
+  
+  
+  /**
+   * A wrapper around an element that allows it to be sorted by a
+   * callback implementing the IOrder interface.
+   *
+   */
+  public class SortableObject implements Comparable
+  {
+    public Object item;
+    IOrder callback;
+    
+    public SortableObject( Object item, IOrder callback )
+    {
+      this.item = item;
+      this.callback = callback;
+    }
+    
+    public Integer compareTo( Object compareTo )
+    {
+      return callback.call( this, (SortableObject) compareTo );
+    }
+    
+    public Object value()
+    {
+      return item;
+    }
   }
   
   
@@ -325,9 +366,14 @@ public class nlib_Func
   
   
   
+  
+  /**
+   * Callback that sorts numerical values in ascending order
+   *
+   */
   public class SortNumbersAscending extends Order
   {
-    public override Integer call( SortableObject item, SortableObject compareTo, Object arg )
+    public override Integer call( SortableObject item, SortableObject compareTo )
     {
       Decimal value = (Decimal) item.value();
       Decimal compareToValue = (Decimal) compareTo.value();
@@ -340,9 +386,13 @@ public class nlib_Func
   
   
   
+  /**
+   * Callback that sorts numerical values in descending order
+   *
+   */
   public class SortNumbersDescending extends Order
   {
-    public override Integer call( SortableObject item, SortableObject compareTo, Object arg )
+    public override Integer call( SortableObject item, SortableObject compareTo )
     {
       Decimal value = (Decimal) item.value();
       Decimal compareToValue = (Decimal) compareTo.value();
@@ -355,9 +405,13 @@ public class nlib_Func
   
   
   
+  /**
+   * Callback that sorts string values in ascending order
+   *
+   */
   public class SortTextAscending extends Order
   {
-    public override Integer call( SortableObject item, SortableObject compareTo, Object arg )
+    public override Integer call( SortableObject item, SortableObject compareTo )
     {
       String value = (String) item.value();
       String compareToValue = (String) compareTo.value();
@@ -370,41 +424,19 @@ public class nlib_Func
   
   
   
+  /**
+   * Callback that sorts string values in descending order
+   *
+   */
   public class SortTextDescending extends Order
   {
-    public override Integer call( SortableObject item, SortableObject compareTo, Object arg )
+    public override Integer call( SortableObject item, SortableObject compareTo )
     {
       String value = (String) item.value();
       String compareToValue = (String) compareTo.value();
       if(value == compareToValue) return 0;
       if(value < compareToValue) return 1;
       return -1;
-    }
-  }
-  
-  
-  
-  
-  public class SortableObject implements Comparable
-  {
-    public Object item;
-    IOrder callback;
-    
-    public SortableObject( Object item, IOrder callback )
-    {
-      this.item = item;
-      this.callback = callback;
-    }
-    
-    
-    public Integer compareTo( Object compareTo )
-    {
-      return callback.call( this, (SortableObject) compareTo, null );
-    }
-    
-    public Object value()
-    {
-      return item;
     }
   }
 }
