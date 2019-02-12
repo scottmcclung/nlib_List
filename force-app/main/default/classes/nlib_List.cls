@@ -22,15 +22,9 @@ public class nlib_List implements Iterator<Object>
   @TestVisible Boolean isSObject;
   
   
-  public class IndexOutOfBoundsException extends Exception
-  {
-  }
-  public class MalformedCallException extends Exception
-  {
-  }
-  public class InvalidTypeException extends Exception
-  {
-  }
+  public class IndexOutOfBoundsException extends Exception {}
+  public class MalformedCallException extends Exception {}
+  public class InvalidTypeException extends Exception {}
   
   
   
@@ -539,6 +533,21 @@ public class nlib_List implements Iterator<Object>
     }
     
     return lst;
+  }
+  
+  
+  
+  
+  /**
+   * Removes all the elements in the list.
+   *
+   * @return
+   */
+  public nlib_List clear()
+  {
+    this.values.clear();
+    this.pointer = 0;
+    return this;
   }
   
   
@@ -1807,16 +1816,29 @@ public class nlib_List implements Iterator<Object>
       ( (nlib_Func.Callback) callback ).setContext( this );
     }
     
-    nlib_Func.SortableObject[] lst = new nlib_Func.SortableObject[]{};
-    for(Object item : this.values) {
-      lst.add( new nlib_Func.SortableObject( item, callback ) );
+    if(size() < 2) return this.deepCopy();
+    
+    Object chosen = get( lastIndex() );
+    
+    nlib_List a = nlib_List.collect();
+    nlib_List b = nlib_List.collect();
+    
+    for(Integer i = 0; i < lastIndex(); i++) {
+      Object temp = get( i );
+      if(callback.call( temp, chosen )) {  // temp < chosen
+        a.add( temp );
+        continue;
+      }
+      b.add( temp );
     }
-    lst.sort();
-    nlib_List newList = nlib_List.collect();
-    for(nlib_Func.SortableObject item : lst) {
-      newList.add( item.value() );
-    }
-    return newList;
+    
+    // create a copy of this collection so the result has the correct type
+    nlib_List output = copy().clear()
+      .add( a.sort( callback ) )
+      .add( chosen )
+      .add( b.sort( callback ) );
+    
+    return output;
   }
   
   
