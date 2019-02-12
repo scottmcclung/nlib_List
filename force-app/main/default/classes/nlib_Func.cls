@@ -83,7 +83,7 @@ public class nlib_Func
    */
   public interface IOrder
   {
-    Integer call( SortableObject item, SortableObject compareTo );
+    Boolean call( Object item, Object compareTo );
   }
   
   
@@ -98,7 +98,9 @@ public class nlib_Func
   {
     protected nlib_List self;
     
-    public Callback() {}
+    public Callback()
+    {
+    }
     
     public void setContext( nlib_List self )
     {
@@ -117,7 +119,9 @@ public class nlib_Func
    */
   public abstract class Function extends Callback implements IFunction
   {
-    public Function() {}
+    public Function()
+    {
+    }
     public abstract void call( Object item, Object arg );
   }
   
@@ -132,7 +136,9 @@ public class nlib_Func
    */
   public abstract class Filter extends Callback implements IFilter
   {
-    public Filter() {}
+    public Filter()
+    {
+    }
     public abstract Boolean call( Object item, Object arg );
   }
   
@@ -147,7 +153,9 @@ public class nlib_Func
    */
   public abstract class Transform extends Callback implements ITransform
   {
-    public Transform() {}
+    public Transform()
+    {
+    }
     public abstract Object call( Object item, Object arg );
   }
   
@@ -162,7 +170,9 @@ public class nlib_Func
    */
   public abstract class Reduce extends Callback implements IReduce
   {
-    public Reduce() {}
+    public Reduce()
+    {
+    }
     public abstract Object call( Object accumulation, Object item, Object arg );
   }
   
@@ -176,37 +186,7 @@ public class nlib_Func
    */
   public abstract class Order extends Callback implements IOrder
   {
-    public abstract Integer call( SortableObject item, SortableObject compareTo );
-  }
-  
-  
-  
-  
-  /**
-   * A wrapper around an element that allows it to be sorted by a
-   * callback implementing the IOrder interface.
-   *
-   */
-  public class SortableObject implements Comparable
-  {
-    public Object item;
-    IOrder callback;
-    
-    public SortableObject( Object item, IOrder callback )
-    {
-      this.item = item;
-      this.callback = callback;
-    }
-    
-    public Integer compareTo( Object compareTo )
-    {
-      return callback.call( this, (SortableObject) compareTo );
-    }
-    
-    public Object value()
-    {
-      return item;
-    }
+    public abstract Boolean call( Object item, Object compareTo );
   }
   
   
@@ -371,15 +351,11 @@ public class nlib_Func
    * Callback that sorts numerical values in ascending order
    *
    */
-  public class SortNumbersAscending extends Order
+  public class SortNumbersAsc extends Order
   {
-    public override Integer call( SortableObject item, SortableObject compareTo )
+    public override Boolean call( Object item, Object compareTo )
     {
-      Decimal value = (Decimal) item.value();
-      Decimal compareToValue = (Decimal) compareTo.value();
-      if(value == compareToValue) return 0;
-      if(value > compareToValue) return 1;
-      return -1;
+      return (Decimal) item < (Decimal) compareTo;
     }
   }
   
@@ -390,15 +366,11 @@ public class nlib_Func
    * Callback that sorts numerical values in descending order
    *
    */
-  public class SortNumbersDescending extends Order
+  public class SortNumbersDesc extends Order
   {
-    public override Integer call( SortableObject item, SortableObject compareTo )
+    public override Boolean call( Object item, Object compareTo )
     {
-      Decimal value = (Decimal) item.value();
-      Decimal compareToValue = (Decimal) compareTo.value();
-      if(value == compareToValue) return 0;
-      if(value < compareToValue) return 1;
-      return -1;
+      return (Decimal) item > (Decimal) compareTo;
     }
   }
   
@@ -409,15 +381,11 @@ public class nlib_Func
    * Callback that sorts string values in ascending order
    *
    */
-  public class SortTextAscending extends Order
+  public class SortTextAsc extends Order
   {
-    public override Integer call( SortableObject item, SortableObject compareTo )
+    public override Boolean call( Object item, Object compareTo )
     {
-      String value = (String) item.value();
-      String compareToValue = (String) compareTo.value();
-      if(value == compareToValue) return 0;
-      if(value > compareToValue) return 1;
-      return -1;
+      return (String) item < (String) compareTo;
     }
   }
   
@@ -428,15 +396,41 @@ public class nlib_Func
    * Callback that sorts string values in descending order
    *
    */
-  public class SortTextDescending extends Order
+  public class SortTextDesc extends Order
   {
-    public override Integer call( SortableObject item, SortableObject compareTo )
+    public override Boolean call( Object item, Object compareTo )
     {
-      String value = (String) item.value();
-      String compareToValue = (String) compareTo.value();
-      if(value == compareToValue) return 0;
-      if(value < compareToValue) return 1;
-      return -1;
+      return (String) item > (String) compareTo;
+    }
+  }
+  
+  
+  
+  
+  /**
+   * Callback that sorts string values in ascending order
+   *
+   */
+  public class SortDatesAsc extends Order
+  {
+    public override Boolean call( Object item, Object compareTo )
+    {
+      return (Date) item < (Date) compareTo;
+    }
+  }
+  
+  
+  
+  
+  /**
+   * Callback that sorts string values in descending order
+   *
+   */
+  public class SortDatesDesc extends Order
+  {
+    public override Boolean call( Object item, Object compareTo )
+    {
+      return (Date) item > (Date) compareTo;
     }
   }
 }
