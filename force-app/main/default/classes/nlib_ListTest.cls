@@ -5,9 +5,7 @@
 @IsTest
 private class nlib_ListTest
 {
-  public class TestException extends Exception
-  {
-  }
+  public class TestException extends Exception {}
   
   
   
@@ -1590,6 +1588,107 @@ private class nlib_ListTest
   
   
   
+  @isTest
+  static void itShouldSortIntegersInAscendingOrder()
+  {
+    nlib_List lst = nlib_List.collect( new Integer[]{ 8, 2, 10, 5, 9, 0, 3, 7, 4, 6, 1 } );
+    Integer[] answer = new Integer[]{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    System.assertEquals( answer, (Integer[]) lst.sort( 'nlib_Func.SortNumbersAsc' ).all() );
+  }
+  
+  
+  
+  
+  @isTest
+  static void itShouldSortIntegersInDescendingOrder()
+  {
+    nlib_List lst = nlib_List.collect( new Integer[]{ 8, 2, 10, 5, 9, 0, 3, 7, 4, 6, 1 } );
+    Integer[] answer = new Integer[]{ 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+    System.assertEquals( answer, (Integer[]) lst.sort( 'nlib_Func.SortNumbersDesc' ).all() );
+  }
+  
+  
+  
+  
+  @isTest
+  static void itShouldSortDecimalsInAscendingOrder()
+  {
+    nlib_List lst = nlib_List.collect( new Decimal[]{ 8.8, 2.2, 10.1, 5.5, 9.9, 0.1, 3.3, 7.7, 4.4, 6.6, 1.1 } );
+    Decimal[] answer = new Decimal[]{ 0.1, 1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7, 8.8, 9.9, 10.1 };
+    System.assertEquals( answer, (Decimal[]) lst.sort( 'nlib_Func.SortNumbersAsc' ).all() );
+  }
+  
+  
+  
+  
+  @isTest
+  static void itShouldSortDecimalsInDescendingOrder()
+  {
+    nlib_List lst = nlib_List.collect( new Decimal[]{ 8.8, 2.2, 10.1, 5.5, 9.9, 0.1, 3.3, 7.7, 4.4, 6.6, 1.1 } );
+    Decimal[] answer = new Decimal[]{ 10.1, 9.9, 8.8, 7.7, 6.6, 5.5, 4.4, 3.3, 2.2, 1.1, 0.1 };
+    System.assertEquals( answer, (Decimal[]) lst.sort( 'nlib_Func.SortNumbersDesc' ).all() );
+  }
+  
+  
+  
+  
+  @isTest
+  static void itShouldSortTextInAscendingOrder()
+  {
+    nlib_List lst = nlib_List.collect( new String[]{ 'Hi', 'ef', 'AB', 'cd', 'fG', 'jk', 'Ca', 'no', 'ee', 'lm' } );
+    String[] answer = new String[]{ 'AB', 'Ca', 'cd', 'ee', 'ef', 'fG', 'Hi', 'jk', 'lm', 'no' };
+    System.assertEquals( answer, (String[]) lst.sort( 'nlib_Func.SortTextAsc' ).all() );
+  }
+  
+  
+  
+  
+  @isTest
+  static void itShouldSortTextInDescendingOrder()
+  {
+    nlib_List lst = nlib_List.collect( new String[]{ 'Hi', 'ef', 'AB', 'cd', 'fG', 'jk', 'Ca', 'no', 'ee', 'lm' } );
+    String[] answer = new String[]{ 'no', 'lm', 'jk', 'Hi', 'fG', 'ef', 'ee', 'cd', 'Ca', 'AB' };
+    System.assertEquals( answer, (String[]) lst.sort( 'nlib_Func.SortTextDesc' ).all() );
+  }
+  
+  
+  
+  
+  @isTest
+  static void itShouldSortDatesInAscendingOrder()
+  {
+    nlib_List lst = nlib_List.collect( new Date[]{ Date.today().addDays( 1 ), Date.today(), Date.today().addDays( -1 ) } );
+    Date[] answer = new Date[]{ Date.today().addDays( -1 ), Date.today(), Date.today().addDays( 1 ) };
+    System.assertEquals( answer, (Date[]) lst.sort( 'nlib_Func.SortDatesAsc' ).all() );
+  }
+  
+  
+  
+  
+  @isTest
+  static void itShouldSortDatesInDescendingOrder()
+  {
+    nlib_List lst = nlib_List.collect( new Date[]{ Date.today().addDays( -1 ), Date.today(), Date.today().addDays( 1 ) } );
+    Date[] answer = new Date[]{ Date.today().addDays( 1 ), Date.today(), Date.today().addDays( -1 ) };
+    System.assertEquals( answer, (Date[]) lst.sort( 'nlib_Func.SortDatesDesc' ).all() );
+  }
+  
+  
+  
+  
+  @isTest
+  static void itShouldReturnANewCollectionWhenSorting()
+  {
+    Integer[] original = new Integer[]{ 8, 2, 10, 5, 9, 0, 3, 7, 4, 6, 1 };
+    Integer[] answer = new Integer[]{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    nlib_List lst = nlib_List.collect( original );
+    System.assertEquals( answer, (Integer[]) lst.sort( 'nlib_Func.SortNumbersAsc' ).all() );
+    System.assertEquals( original, (Integer[]) lst.all() );
+  }
+  
+  
+  
+  
   @IsTest
   static void itShouldBeSplitIntoGroups()
   {
@@ -1639,7 +1738,7 @@ private class nlib_ListTest
   {
     nlib_List lst = nlib_List.collect();
     lst = lst.times( IntegerFill.class, 11 );
-    system.assertEquals( new Integer[]{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, (Integer[]) lst.all( Integer[].class ) );
+    system.assertEquals( new Integer[]{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, (Integer[]) lst.all( Integer[ ].class ) );
   }
   
   
@@ -1759,6 +1858,8 @@ private class nlib_ListTest
       return (Double) item > minimum;
     }
   }
+  
+  
   
   
   public class ConvertToString extends nlib_Func.Transform
