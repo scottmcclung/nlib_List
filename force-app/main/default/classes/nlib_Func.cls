@@ -76,7 +76,21 @@ public class nlib_Func
   
   
   /**
-   * Base class for versions of higher order functions that
+   * Callback that accepts two objects to be compared in a sorting context.
+   * Returns an integer value (1, 0 , -1) that the Comparable interface expects
+   * based on the ranking of the two objects.
+   *
+   */
+  public interface IOrder
+  {
+    Boolean call( Object item, Object compareTo );
+  }
+  
+  
+  
+  
+  /**
+   * Base class for higher order functions that
    * allows for injection of the list context
    *
    */
@@ -84,7 +98,9 @@ public class nlib_Func
   {
     protected nlib_List self;
     
-    public Callback() {}
+    public Callback()
+    {
+    }
     
     public void setContext( nlib_List self )
     {
@@ -103,7 +119,9 @@ public class nlib_Func
    */
   public abstract class Function extends Callback implements IFunction
   {
-    public Function() {}
+    public Function()
+    {
+    }
     public abstract void call( Object item, Object arg );
   }
   
@@ -118,7 +136,9 @@ public class nlib_Func
    */
   public abstract class Filter extends Callback implements IFilter
   {
-    public Filter() {}
+    public Filter()
+    {
+    }
     public abstract Boolean call( Object item, Object arg );
   }
   
@@ -133,7 +153,9 @@ public class nlib_Func
    */
   public abstract class Transform extends Callback implements ITransform
   {
-    public Transform() {}
+    public Transform()
+    {
+    }
     public abstract Object call( Object item, Object arg );
   }
   
@@ -148,8 +170,23 @@ public class nlib_Func
    */
   public abstract class Reduce extends Callback implements IReduce
   {
-    public Reduce() {}
+    public Reduce()
+    {
+    }
     public abstract Object call( Object accumulation, Object item, Object arg );
+  }
+  
+  
+  
+  
+  /**
+   * Abstract base class for implementations of IOrder
+   * Extend this class if you want your implementations to have access to
+   * the nlib_List context
+   */
+  public abstract class Order extends Callback implements IOrder
+  {
+    public abstract Boolean call( Object item, Object compareTo );
   }
   
   
@@ -304,6 +341,96 @@ public class nlib_Func
       if(arg instanceof String) return false;
       if(arg != null) return false;
       return true;
+    }
+  }
+  
+  
+  
+  
+  /**
+   * Callback that sorts numerical values in ascending order
+   *
+   */
+  public class SortNumbersAsc extends Order
+  {
+    public override Boolean call( Object item, Object compareTo )
+    {
+      return (Decimal) item < (Decimal) compareTo;
+    }
+  }
+  
+  
+  
+  
+  /**
+   * Callback that sorts numerical values in descending order
+   *
+   */
+  public class SortNumbersDesc extends Order
+  {
+    public override Boolean call( Object item, Object compareTo )
+    {
+      return (Decimal) item > (Decimal) compareTo;
+    }
+  }
+  
+  
+  
+  
+  /**
+   * Callback that sorts string values in ascending order
+   *
+   */
+  public class SortTextAsc extends Order
+  {
+    public override Boolean call( Object item, Object compareTo )
+    {
+      return (String) item < (String) compareTo;
+    }
+  }
+  
+  
+  
+  
+  /**
+   * Callback that sorts string values in descending order
+   *
+   */
+  public class SortTextDesc extends Order
+  {
+    public override Boolean call( Object item, Object compareTo )
+    {
+      return (String) item > (String) compareTo;
+    }
+  }
+  
+  
+  
+  
+  /**
+   * Callback that sorts string values in ascending order
+   *
+   */
+  public class SortDatesAsc extends Order
+  {
+    public override Boolean call( Object item, Object compareTo )
+    {
+      return (Date) item < (Date) compareTo;
+    }
+  }
+  
+  
+  
+  
+  /**
+   * Callback that sorts string values in descending order
+   *
+   */
+  public class SortDatesDesc extends Order
+  {
+    public override Boolean call( Object item, Object compareTo )
+    {
+      return (Date) item > (Date) compareTo;
     }
   }
 }

@@ -22,15 +22,9 @@ public class nlib_List implements Iterator<Object>
   @TestVisible Boolean isSObject;
   
   
-  public class IndexOutOfBoundsException extends Exception
-  {
-  }
-  public class MalformedCallException extends Exception
-  {
-  }
-  public class InvalidTypeException extends Exception
-  {
-  }
+  public class IndexOutOfBoundsException extends Exception {}
+  public class MalformedCallException extends Exception {}
+  public class InvalidTypeException extends Exception {}
   
   
   
@@ -539,6 +533,21 @@ public class nlib_List implements Iterator<Object>
     }
     
     return lst;
+  }
+  
+  
+  
+  
+  /**
+   * Removes all the elements in the list.
+   *
+   * @return
+   */
+  public nlib_List clear()
+  {
+    this.values.clear();
+    this.pointer = 0;
+    return this;
   }
   
   
@@ -1355,7 +1364,7 @@ public class nlib_List implements Iterator<Object>
   {
     if(!isSObjectType()) throw new MalformedCallException( 'The pluckIds method is only available for SObject collections' );
     nlib_List lst = new nlib_List( new Id[]{} );
-    return lst.add(mapp( nlib_Func.PluckId ));
+    return lst.add( mapp( nlib_Func.PluckId ) );
   }
   
   
@@ -1762,6 +1771,74 @@ public class nlib_List implements Iterator<Object>
       lst.add( get( i ) );
     }
     return lst;
+  }
+  
+  
+  
+  
+  /**
+   * Returns a new collection sorted according the rules in the given callback
+   *
+   * @param callbackTypeName
+   * @return
+   */
+  public nlib_List sort( String callbackTypeName )
+  {
+    return sort( System.Type.forName( callbackTypeName ) );
+  }
+  
+  
+  
+  
+  /**
+   * Returns a new collection sorted according the rules in the given callback
+   *
+   * @param callback
+   * @return
+   */
+  public nlib_List sort( Type callbackType )
+  {
+    return sort( (nlib_Func.IOrder) callbackType.newInstance() );
+  }
+  
+  
+  
+  
+  /**
+   * Returns a new collection sorted according the rules in the given callback
+   *
+   * @param callback
+   * @return
+   */
+  public nlib_List sort( nlib_Func.IOrder callback )
+  {
+    if(callback instanceof nlib_Func.Callback) {
+      ( (nlib_Func.Callback) callback ).setContext( this );
+    }
+    
+    if(size() < 2) return this.deepCopy();
+    
+    Object chosen = get( lastIndex() );
+    
+    nlib_List a = nlib_List.collect();
+    nlib_List b = nlib_List.collect();
+    
+    for(Integer i = 0; i < lastIndex(); i++) {
+      Object temp = get( i );
+      if(callback.call( temp, chosen )) {  // temp < chosen
+        a.add( temp );
+        continue;
+      }
+      b.add( temp );
+    }
+    
+    // create a copy of this collection so the result has the correct type
+    nlib_List output = copy().clear()
+      .add( a.sort( callback ) )
+      .add( chosen )
+      .add( b.sort( callback ) );
+    
+    return output;
   }
   
   
