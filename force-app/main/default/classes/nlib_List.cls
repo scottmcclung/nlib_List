@@ -559,7 +559,7 @@ public class nlib_List implements Iterator<Object>
    */
   public Boolean contains( Object item )
   {
-    return new Set<Object>( this.values ).contains( item );
+    return this.values.contains( item );
   }
   
   
