@@ -5,8 +5,6 @@
 /**
  * todo: Write documentation
  * todo: implement where()
- * todo: implement unique()
- * todo: implement sort()
  * todo: implement contains()
  *
  */
@@ -1765,7 +1763,7 @@ public class nlib_List implements Iterator<Object>
   {
     requiresValidIndex( index );
 //    Integer lastIndex = index + length <= size() ? index + length : size();
-    Integer lastIndex = index + (length - 1) <= lastIndex() ? index + (length - 1) : lastIndex();
+    Integer lastIndex = index + ( length - 1 ) <= lastIndex() ? index + ( length - 1 ) : lastIndex();
     
     nlib_List lst = this.deepCopy().clear();
     for(Integer i = index; i <= lastIndex; i++) {
@@ -1859,7 +1857,7 @@ public class nlib_List implements Iterator<Object>
     nlib_List[] lst = new nlib_List[]{};
     Integer groupSize = (Integer) Math.floor( (Double) size() / (Double) groups );
 //    Integer remainder = (Integer) Math.mod( size(), groupSize );
-    Integer remainder = (Integer) (size() - (groups * groupSize));
+    Integer remainder = (Integer) ( size() - ( groups * groupSize ) );
     Integer start = 0;
     
     for(Integer i = 0; i < groups; i++) {
@@ -2023,6 +2021,21 @@ public class nlib_List implements Iterator<Object>
   public String toPrettyJson()
   {
     return JSON.serializePretty( this.values );
+  }
+  
+  
+  
+  
+  /**
+   * Returns a new collection with only unique values
+   *
+   * @return
+   */
+  public nlib_List unique()
+  {
+    nlib_List lst = deepCopy().clear();
+    lst.add( new List<Object>( new Set<Object>( this.values ) ) );
+    return lst;
   }
   
   

@@ -514,6 +514,16 @@ nlib_List.collect(new Integer[]{ 1, 2, 3, 4, 5 }).toJson(); // [ 1, 2, 3, 4, 5 ]
 
 
 
+##### ```unique()```
+
+Returns a new collection with only unique values
+
+```apex
+nlib_List.collect(new Integer[]{ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 }).unique(); // [ 1, 2, 3, 4, 5 ]
+```
+
+
+
 ##### ```values()```
 
 Similar to the ```all()``` method.  Returns all the values in the collection.

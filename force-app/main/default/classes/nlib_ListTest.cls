@@ -1797,6 +1797,41 @@ private class nlib_ListTest
   
   
   
+  @isTest
+  static void itShouldReturnACollectionWithUniqueValues()
+  {
+    nlib_List lst = nlib_List.collect( new String[]{ 'A', 'a', 'a', 'B', 'B', 'b', 'C', 'c', 'c', 'D', 'D', 'd', 'd' } );
+    nlib_list uniqueLst = lst.unique();
+    System.assertEquals( new String[]{ 'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd' }, (String[]) uniqueLst.all() );
+    
+    nlib_List lst2 = nlib_List.collect( new Integer[]{ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6 } );
+    nlib_list uniqueLst2 = lst2.unique();
+    System.assertEquals( new Integer[]{ 1, 2, 3, 4, 5, 6 }, (Integer[]) uniqueLst2.all() );
+    
+    nlib_List lst3 = nlib_List.collect( new Date[]{
+      Date.today().addDays( -1 ),
+      Date.today().addDays( -1 ),
+      Date.today().addDays( 1 ),
+      Date.today().addDays( 1 ),
+      Date.today().addDays( 1 ),
+      Date.today().addDays( -10 ),
+      Date.today().addDays( -11 ),
+      Date.today().addDays( -11 )
+    } );
+    
+    nlib_list uniqueLst3 = lst3.unique();
+    
+    System.assertEquals( new Date[]{
+      Date.today().addDays( -1 ),
+      Date.today().addDays( 1 ),
+      Date.today().addDays( -10 ),
+      Date.today().addDays( -11 )
+    }, (Date[]) uniqueLst3.all() );
+  }
+  
+  
+  
+  
   @IsTest
   static void itShouldReturnTheValues()
   {
