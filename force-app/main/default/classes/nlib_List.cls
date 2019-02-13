@@ -1743,7 +1743,7 @@ public class nlib_List implements Iterator<Object>
   public nlib_List slice( Integer index )
   {
     requiresValidIndex( index );
-    nlib_List lst = newInstance();
+    nlib_List lst = this.deepCopy().clear();
     for(Integer i = index; i <= lastIndex(); i++) {
       lst.add( get( i ) );
     }
@@ -1764,10 +1764,11 @@ public class nlib_List implements Iterator<Object>
   public nlib_List slice( Integer index, Integer length )
   {
     requiresValidIndex( index );
-    Integer lastIndex = index + length <= size() ? index + length : size();
+//    Integer lastIndex = index + length <= size() ? index + length : size();
+    Integer lastIndex = index + (length - 1) <= lastIndex() ? index + (length - 1) : lastIndex();
     
-    nlib_List lst = collect();
-    for(Integer i = index; i < lastIndex; i++) {
+    nlib_List lst = this.deepCopy().clear();
+    for(Integer i = index; i <= lastIndex; i++) {
       lst.add( get( i ) );
     }
     return lst;
@@ -1857,10 +1858,11 @@ public class nlib_List implements Iterator<Object>
     
     nlib_List[] lst = new nlib_List[]{};
     Integer groupSize = (Integer) Math.floor( (Double) size() / (Double) groups );
-    Integer remainder = (Integer) Math.mod( size(), groupSize );
+//    Integer remainder = (Integer) Math.mod( size(), groupSize );
+    Integer remainder = (Integer) (size() - (groups * groupSize));
     Integer start = 0;
     
-    for(Integer i = 0; i < groupSize; i++) {
+    for(Integer i = 0; i < groups; i++) {
       Integer size = groupSize;
       
       if(i < remainder) size++;
