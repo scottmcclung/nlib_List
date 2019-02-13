@@ -552,6 +552,20 @@ public class nlib_List implements Iterator<Object>
   
   
   /**
+   * Returns true if the collection contains the given object
+   *
+   * @param item
+   * @return
+   */
+  public Boolean contains( Object item )
+  {
+    return new Set<Object>( this.values ).contains( item );
+  }
+  
+  
+  
+  
+  /**
    * Return a refernece copy of the collection
    *
    * @return
@@ -572,6 +586,14 @@ public class nlib_List implements Iterator<Object>
   public nlib_List deepCopy()
   {
     return nlib_List.collect( this.values.clone() );
+  }
+  
+  
+  
+  
+  public Boolean doesNotContain( Object item )
+  {
+    return !contains( item );
   }
   
   
