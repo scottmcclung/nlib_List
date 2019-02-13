@@ -1693,10 +1693,35 @@ private class nlib_ListTest
   static void itShouldBeSplitIntoGroups()
   {
     nlib_List lst = nlib_List.collect( new Integer[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } );
-    System.assertEquals( 3, lst.split( 3 ).size() );
-    System.assert( lst.split( 3 )[ 0 ].equals( new Integer[]{ 1, 2, 3, 4 } ) );
-    System.assert( lst.split( 3 )[ 1 ].equals( new Integer[]{ 5, 6, 7 } ) );
-    System.assert( lst.split( 3 )[ 2 ].equals( new Integer[]{ 8, 9, 10 } ) );
+    nlib_List[] splitLst = lst.split( 3 );
+    System.assertEquals( 3, splitLst.size() );
+    System.assertEquals( new Integer[]{ 1, 2, 3, 4 }, (Integer[]) splitLst[ 0 ].all() );
+    System.assertEquals( new Integer[]{ 5, 6, 7 }, (Integer[]) splitLst[ 1 ].all() );
+    System.assertEquals( new Integer[]{ 8, 9, 10 }, (Integer[]) splitLst[ 2 ].all() );
+    
+    
+    nlib_List lst2 = nlib_List.collect( new Integer[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9 } );
+    nlib_List[] splitLst2 = lst2.split( 3 );
+    System.assertEquals( 3, splitLst2.size() );
+    System.assertEquals( new Integer[]{ 1, 2, 3 }, (Integer[]) splitLst2[ 0 ].all() );
+    System.assertEquals( new Integer[]{ 4, 5, 6 }, (Integer[]) splitLst2[ 1 ].all() );
+    System.assertEquals( new Integer[]{ 7, 8, 9 }, (Integer[]) splitLst2[ 2 ].all() );
+    
+    
+    nlib_List lst3 = nlib_List.collect( new Integer[]{ 1, 2, 3, 4, 5, 6, 7, 8 } );
+    nlib_List[] splitLst3 = lst3.split( 3 );
+    System.assertEquals( 3, splitLst3.size() );
+    System.assertEquals( new Integer[]{ 1, 2, 3 }, (Integer[]) splitLst3[ 0 ].all() );
+    System.assertEquals( new Integer[]{ 4, 5, 6 }, (Integer[]) splitLst3[ 1 ].all() );
+    System.assertEquals( new Integer[]{ 7, 8 }, (Integer[]) splitLst3[ 2 ].all() );
+    
+    
+    nlib_List lst4 = nlib_List.collect( new Integer[]{ 1, 2, 3, 4, 5, 6, 7 } );
+    nlib_List[] splitLst4 = lst4.split( 3 );
+    System.assertEquals( 3, splitLst4.size() );
+    System.assertEquals( new Integer[]{ 1, 2, 3 }, (Integer[]) splitLst4[ 0 ].all() );
+    System.assertEquals( new Integer[]{ 4, 5 }, (Integer[]) splitLst4[ 1 ].all() );
+    System.assertEquals( new Integer[]{ 6, 7 }, (Integer[]) splitLst4[ 2 ].all() );
   }
   
   
