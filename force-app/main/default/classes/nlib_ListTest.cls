@@ -1,7 +1,3 @@
-/**
- * Created by Scott McClung on 9/23/18.
- */
-
 @IsTest
 private class nlib_ListTest
 {
@@ -558,24 +554,24 @@ private class nlib_ListTest
     System.assert( !lst.contains( 6 ) );
     System.assert( !lst.contains( 'A' ) );
     System.assert( !lst.contains( null ) );
-  
-  
-    nlib_List lst1 = nlib_List.collect( new String[]{ 'A','B','C','D' } );
+    
+    
+    nlib_List lst1 = nlib_List.collect( new String[]{ 'A', 'B', 'C', 'D' } );
     System.assert( lst1.contains( 'A' ) );
     System.assert( lst1.contains( 'B' ) );
     System.assert( !lst1.contains( 'F' ) );
     System.assert( !lst1.contains( 1 ) );
     System.assert( !lst1.contains( null ) );
-  
-  
+    
+    
     nlib_List lst2 = nlib_List.collect( new Date[]{
-      Date.today().addDays(-1),
+      Date.today().addDays( -1 ),
       Date.today(),
       Date.today().addDays( 1 ),
       Date.today().addDays( 2 )
     } );
-    System.assert( lst2.contains( Date.today()) );
-    System.assert( !lst2.contains( Date.today().addDays(20) ) );
+    System.assert( lst2.contains( Date.today() ) );
+    System.assert( !lst2.contains( Date.today().addDays( 20 ) ) );
     System.assert( !lst2.contains( Datetime.now() ) );
     System.assert( !lst2.contains( 1 ) );
     System.assert( !lst2.contains( 'A' ) );
@@ -616,6 +612,36 @@ private class nlib_ListTest
     lst1.pull( 0 );
     System.assertEquals( 1, lst1.size() );
     System.assertEquals( 2, lst2.size() );
+  }
+  
+  
+  
+  
+  @isTest
+  static void itShouldReturnTheDifferenceBetweenTwoCollections()
+  {
+    nlib_List lst = nlib_List.collect( new Integer[]{ 1, 2, 3, 4, 5 } );
+    nlib_List diffLst = nlib_List.collect( new Integer[]{ 2, 3, 4 } );
+    System.assert( lst.diff( diffLst ).equals( new Integer[]{ 1, 5 } ) );
+    
+    nlib_List lst1 = nlib_List.collect( new String[]{ 'a', 'b', 'c', 'd', 'e', 'f' } );
+    nlib_List diffLst1 = nlib_List.collect( new String[]{ 'c', 'a', 'f' } );
+    System.assert( lst1.diff( diffLst1 ).equals( new String[]{ 'b', 'd', 'e' } ) );
+    
+    nlib_List lst2 = nlib_List.collect( new Date[]{
+      Date.today(),
+      Date.today().addDays( 1 ),
+      Date.today().addDays( 2 ),
+      Date.today().addDays( 3 )
+    } );
+    nlib_List diffLst2 = nlib_List.collect( new Date[]{
+      Date.today(),
+      Date.today().addDays( 3 )
+    } );
+    System.assert( lst2.diff( diffLst2 ).equals( new Date[]{
+      Date.today().addDays( 1 ),
+      Date.today().addDays( 2 )
+    } ) );
   }
   
   
