@@ -1,17 +1,3 @@
-/**
- * Created by Scott McClung on 9/23/18.
- */
-
-/**
- * todo: Write documentation
- * todo: implement where()
- * todo: implement contains()
- *
- */
-
-
-
-
 public class nlib_List implements Iterator<Object>
 {
   @TestVisible Object[] values;
@@ -591,6 +577,46 @@ public class nlib_List implements Iterator<Object>
   
   
   
+  /**
+   * Compares this collection against a given collection.  Returns the values in the original collection
+   * not found in the given collection.
+   *
+   * @return
+   */
+  public nlib_List diff(nlib_List filterList)
+  {
+    nlib_List lst = deepCopy().clear();
+    for(Object item : values()) {
+      if(filterList.doesNotContain(item)) lst.add(item);
+    }
+    return lst;
+  }
+  
+  
+  
+  
+  /**
+   * Compares this collection against a given collection.  Returns the values in the original collection
+   * not found in the given collection.
+   *
+   * @return
+   */
+  public nlib_List diff( Object[] filterList )
+  {
+    return diff(nlib_List.collect(filterList));
+  }
+  
+  
+  
+  
+  
+  
+  /**
+   * Returns true if the collection does not contain the given object
+   *
+   * @param item
+   * @return
+   */
   public Boolean doesNotContain( Object item )
   {
     return !contains( item );

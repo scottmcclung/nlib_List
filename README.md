@@ -136,6 +136,21 @@ Returns a new cloned instance of the collection.
 nlib_List collection1 = nlib_List.collect(new Integer[]{ 1, 2, 3 });
 nlib_List collection2 = collection1.deepCopy();
 ```
+ 
+ 
+ 
+ 
+##### ```diff()```
+ 
+Returns the difference between two collections.  
+Compares the original collection against a given collection.  Returns a new list containing the values in the original collection not found in the given collection.
+ 
+```apex
+nlib_List collection1 = nlib_List.collect(new Integer[]{1,2,3,4,5,6,7,8,9,0});
+nlib_List collection2 = nlib_List.collect( new Integer[]{ 4, 5, 6, 7 } );
+collection1.diff( collection2 ); // returns [ 1, 2, 3, 8, 9, 0 ]
+```
+
 
 
 
@@ -150,7 +165,7 @@ nlib_List collection1 = nlib_List.collect(new Integer[]{ 1, 2, 3 })
   .add( 5 )
   .dump()      //  Logs [ 1, 2, 3, 4, 5 ]
   .add( 6 )
-  .all()       // outputs [ 1, 2, 3, 4, 5 ];
+  .all();       // outputs [ 1, 2, 3, 4, 5 ];
 ```
 
 
